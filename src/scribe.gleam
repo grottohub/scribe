@@ -41,10 +41,15 @@ pub fn main() {
     Error(_) -> ""
   }
 
-  let scribe =
+  let assert Ok(scribe) =
     bot.new(discord_token, "https://github.com/grottohub/scribe", "1.0.0")
     |> bot.set_intents([discord.GuildMessages, discord.MessageContent])
     |> bot.on_message_create(message_handler)
+    |> bot.initialize
 
-  process.sleep_forever
+  let _ =
+    scribe
+    |> bot.send("CHANNEL_ID", discord.MessagePayload("Hello!"))
+
+  process.sleep_forever()
 }
